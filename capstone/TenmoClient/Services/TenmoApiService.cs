@@ -12,10 +12,10 @@ namespace TenmoClient.Services
         public TenmoApiService(string apiUrl) : base(apiUrl) { }
 
         // Add methods to call api here...
-        public TenmoServer.Models.Transfer GetAccountBalance()
+        public Transfer GetAccountBalance()
         {
             RestRequest request = new RestRequest("balance");
-            IRestResponse<TenmoServer.Models.Transfer> response = client.Get<TenmoServer.Models.Transfer>(request);
+            IRestResponse <Transfer> response = client.Get<Transfer>(request);
 
             
             return response.Data;

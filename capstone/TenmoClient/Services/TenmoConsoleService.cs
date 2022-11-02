@@ -51,6 +51,13 @@ namespace TenmoClient.Services
             return loginUser;
         }
 
+        //public int PromptForUserId()
+        //{
+        //    int userInput = PromptForInteger("User Id");
+        //    return 
+
+        //}
+
         // Add application-specific UI methods here...
 
 
