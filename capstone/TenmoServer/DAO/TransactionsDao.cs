@@ -10,9 +10,14 @@ namespace TenmoServer.DAO
     public class TransactionsDao : ITransactionDao
     {
 
-        private readonly string connectString; 
+        private readonly string connectString;
 
         private static List<Transfer> Transfers { get; set; }
+
+        public TransactionsDao(string dbConnectionString)
+        {
+            connectString = dbConnectionString;
+        }
 
 
         public Transfer GetAccountBalance(int userId)
@@ -58,8 +63,9 @@ namespace TenmoServer.DAO
             transfer.AccountId = Convert.ToInt32(reader["account_id"]);
             transfer.Balance = Convert.ToInt32(reader["balance"]);
             transfer.UserId = Convert.ToInt32(reader["user_id"]);
-            
+
 
             return transfer;
         }
+    }
 }

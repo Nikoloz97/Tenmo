@@ -51,15 +51,11 @@ namespace TenmoClient.Services
             return loginUser;
         }
 
-        //public int PromptForUserId()
-        //{
-        //    int userInput = PromptForInteger("User Id");
-        //    return 
-
-        //}
-
-        // Add application-specific UI methods here...
-
+        public void PrintBalance(Transfer transfer)
+        {
+            Console.WriteLine($"Your current balance is: {transfer.Balance}");
+            
+        }
 
     }
 }
