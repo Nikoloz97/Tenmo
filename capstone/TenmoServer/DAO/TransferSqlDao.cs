@@ -11,9 +11,14 @@ namespace TenmoServer.DAO
 
     {
         private readonly string connectionString;
-        public double GetBalance(int user_id)
+
+        public TransferSqlDao(string dbConnectionString)
         {
-            double balance = 0;
+            connectionString = dbConnectionString;
+        }
+        public Transfer GetBalance(int user_id)
+        {
+            Transfer transfer = new Transfer();
 
             try
             {
@@ -21,13 +26,13 @@ namespace TenmoServer.DAO
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("SELECT balance FROM account WHERE user_id = @user_id", conn);
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM account WHERE user_id = @user_id", conn);
                     cmd.Parameters.AddWithValue("@user_id", user_id);
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     if (reader.Read())
                     {
-                        balance = GetBalanceFromReader(reader).Balance;
+                        transfer = GetBalanceFromReader(reader);
                     }
                 }
             }
@@ -36,7 +41,7 @@ namespace TenmoServer.DAO
                 throw;
             }
 
-            return balance;
+            return transfer;
         }
 
         private Transfer GetBalanceFromReader(SqlDataReader reader)

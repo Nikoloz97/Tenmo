@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TenmoClient.Models
 {
-    class Transfer
+    public class Transfer
     {
         public int UserId { get; set; }
         public int AccountId { get; set; }

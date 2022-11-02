@@ -8,6 +8,7 @@ namespace TenmoClient
 {
     public class TenmoApp
     {
+        private ApiUser currentUser = null;
         //private readonly TransactionApiService transactionApiService;
         private readonly TenmoConsoleService console = new TenmoConsoleService();
         private readonly TenmoApiService tenmoApiService;
@@ -76,7 +77,7 @@ namespace TenmoClient
             if (menuSelection == 1)
             {
                 //view account balance 
-                    
+                GetBalance();
             }
 
             if (menuSelection == 2)
@@ -127,6 +128,7 @@ namespace TenmoClient
                 else
                 {
                     console.PrintSuccess("You are now logged in");
+                    currentUser = user;
                 }
             }
             catch (Exception)
@@ -166,10 +168,10 @@ namespace TenmoClient
         {
             try
             {
-                Transfer transfers = tenmoApiService.GetAccountBalance()
-                if (hotels != null)
+                Transfer transfers = tenmoApiService.GetAccountBalance(currentUser);
+                if (transfers != null)
                 {
-                    console.PrintHotels(hotels);
+                    console.PrintBalance(transfers);
                 }
             }
             catch (Exception ex)

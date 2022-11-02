@@ -8,7 +8,7 @@ using TenmoServer.Models;
 
 namespace TenmoServer.Controllers
 {
-    [Route("controller")]
+    [Route("[controller]")]
     [ApiController]
     public class TransferController : ControllerBase
     {
@@ -17,7 +17,14 @@ namespace TenmoServer.Controllers
         {
             this.transferDao = transfer;
         }
-      
+      [HttpGet("balance/{user_id}")]
+      public ActionResult<Transfer> GetBalance(int user_id)
+        {
+            Transfer transfer = transferDao.GetBalance(user_id);
+
+            return transfer;
+
+        }
         
     }
 }

@@ -1,7 +1,7 @@
 ﻿using RestSharp;
 using System.Collections.Generic;
 using TenmoClient.Models;
-using TenmoServer.Models;
+//using TenmoServer.Models;
 
 namespace TenmoClient.Services
 {
@@ -12,10 +12,11 @@ namespace TenmoClient.Services
         public TenmoApiService(string apiUrl) : base(apiUrl) { }
 
         // Add methods to call api here...
-        public Transfer GetAccountBalance()
+        public Transfer GetAccountBalance(ApiUser user)
         {
-            RestRequest request = new RestRequest("balance");
-            IRestResponse <Transfer> response = client.Get<Transfer>(request);
+            
+            RestRequest request = new RestRequest($"transfer/balance/{user.UserId}");
+            IRestResponse<Transfer> response = client.Get<Transfer>(request);
 
             
             return response.Data;
