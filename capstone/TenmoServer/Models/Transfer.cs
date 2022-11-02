@@ -7,9 +7,30 @@ namespace TenmoServer.Models
 {
     public class Transfer
     {
-        public int UserId { get; set; }
         public int AccountId { get; set; }
+        public int UserId { get; set; }
         public double Balance { get; set; }
-        // add more stuff lol
+
+
+        public Transfer()
+        {
+            //must have parameterless constructor to deserialize
+        }
+
+        public Transfer(int accountId, int userId, double balance)
+        {
+            AccountId = accountId;
+            UserId = userId;
+            Balance = balance;
+
+        }
+
+
+
+
+
+
+
+        
     }
 }
