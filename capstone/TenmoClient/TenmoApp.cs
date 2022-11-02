@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using TenmoClient.Models;
 using TenmoClient.Services;
 
+
 namespace TenmoClient
 {
     public class TenmoApp
     {
+        //private readonly TransactionApiService transactionApiService;
         private readonly TenmoConsoleService console = new TenmoConsoleService();
         private readonly TenmoApiService tenmoApiService;
 
@@ -73,7 +75,8 @@ namespace TenmoClient
 
             if (menuSelection == 1)
             {
-                // View your current balance
+                //view account balance 
+                    
             }
 
             if (menuSelection == 2)
@@ -155,6 +158,23 @@ namespace TenmoClient
             catch (Exception)
             {
                 console.PrintError("Registration was unsuccessful.");
+            }
+            console.Pause();
+        }
+
+        private void GetBalance()
+        {
+            try
+            {
+                Transfer transfers = tenmoApiService.GetAccountBalance()
+                if (hotels != null)
+                {
+                    console.PrintHotels(hotels);
+                }
+            }
+            catch (Exception ex)
+            {
+                console.PrintError(ex.Message);
             }
             console.Pause();
         }
