@@ -48,8 +48,34 @@ namespace TenmoServer.DAO
         }
 
 
-       
+        public Transfer MakeTransaction(int userID, double amountToSend, double Balance)
+        {
+            Transfer transfer = new Transfer();
 
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM account WHERE user_id = @user_id", conn);
+                    cmd.Parameters.AddWithValue("@user_id", userID);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        transfer = GetBalanceFromReader(reader);
+                    }
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+
+            return transfer;
+
+        }
 
 
         private Transfer GetBalanceFromReader(SqlDataReader reader)
@@ -64,6 +90,5 @@ namespace TenmoServer.DAO
             return transfer;
         }
 
-       
     }
 }

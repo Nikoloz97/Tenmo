@@ -57,6 +57,35 @@ namespace TenmoClient.Services
             
         }
 
+        public Transfer PrintSelectUser()
+        {
+            int idInput = PromptForInteger("Id for the user you're sending to:");
+
+            double receiverBalance = 0;
+
+            Transfer receivingUser = new Transfer
+            {
+                UserId = idInput,
+                Balance = receiverBalance
+           
+            };
+
+            return receivingUser;
+        }
+
+        public Transfer PrintAmountToTransfer()
+        {
+            Transfer receivingUser = new Transfer();
+
+            double amountInput = PromptForDouble("Enter amount to send:");
+
+            receivingUser.Balance += amountInput;
+
+            return receivingUser;
+        }
+
+
+
         public void PrintUsers(List<ApiUser> users)
         {
             foreach (ApiUser user in users)
