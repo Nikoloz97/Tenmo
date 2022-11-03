@@ -9,7 +9,6 @@ namespace TenmoClient
     public class TenmoApp
     {
         private ApiUser currentUser = null;
-        //private readonly TransactionApiService transactionApiService;
         private readonly TenmoConsoleService console = new TenmoConsoleService();
         private readonly TenmoApiService tenmoApiService;
 

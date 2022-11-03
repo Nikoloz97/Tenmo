@@ -7,6 +7,11 @@ using System.Data.SqlClient;
 
 namespace TenmoServer.DAO
 {
+
+    // Useless... 
+    // Just like Darr
+
+
     public class TransactionsDao : ITransactionDao
     {
 

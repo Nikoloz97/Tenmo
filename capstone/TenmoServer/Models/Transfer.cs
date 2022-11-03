@@ -15,6 +15,7 @@ namespace TenmoServer.Models
         public Transfer()
         {
             //must have parameterless constructor to deserialize
+            //deserialize = converting string (JSON) -> C# object(s)
         }
 
         public Transfer(int accountId, int userId, double balance)
@@ -25,12 +26,5 @@ namespace TenmoServer.Models
 
         }
 
-
-
-
-
-
-
-        
     }
 }
