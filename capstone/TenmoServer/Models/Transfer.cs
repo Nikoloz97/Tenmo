@@ -25,6 +25,12 @@ namespace TenmoServer.Models
 
         }
 
+        public class TenmoUser
+        {
+
+        }
+            
+
 
 
 

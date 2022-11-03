@@ -11,7 +11,7 @@ namespace TenmoServer.DAO
     {
         private readonly string connectionString;
         const decimal startingBalance = 1000;
-
+       // public List<User> Users { get; set; }
         public UserSqlDao(string dbConnectionString)
         {
             connectionString = dbConnectionString;
@@ -118,6 +118,51 @@ namespace TenmoServer.DAO
             };
 
             return u;
+        }
+
+        public List<User> ListOfUsers()
+        {
+            List<User> users = new List<User>();
+            //return Users;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    //List<User> users = new List<User>();
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM tenmo_user", conn);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+
+
+                        User user = GetTenmoUsersFromReader(reader);
+                        users.Add(user);
+
+                    }
+                    return users;
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+
+            // return users;
+        }
+
+        private User GetTenmoUsersFromReader(SqlDataReader reader)
+        {
+            User transfer = new User()
+            {
+                UserId = Convert.ToInt32(reader["user_id"]),
+                Username = Convert.ToString(reader["username"]),
+
+
+            };
+            return transfer;
         }
     }
 }

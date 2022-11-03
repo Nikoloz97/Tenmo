@@ -57,5 +57,14 @@ namespace TenmoClient.Services
             
         }
 
+        public void PrintUsers(List<ApiUser> users)
+        {
+            foreach (ApiUser user in users)
+            {
+                Console.WriteLine($"ID: {user.UserId}");
+                Console.WriteLine($"Name: {user.Username}");
+            }
+           
+        }
     }
 }
