@@ -17,6 +17,7 @@ namespace TenmoServer.Controllers
         {
             this.transferDao = transfer;
         }
+
       [HttpGet("balance/{user_id}")]
       public ActionResult<Transfer> GetBalance(int user_id)
         {
