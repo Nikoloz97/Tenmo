@@ -31,6 +31,39 @@ namespace TenmoClient.Services
             return response.Data;
         }
 
+        //public Transfer MakeTransaction(ApiUser user, int receiverId, double amountToSend)
+        //{
+        //    RestRequest request = new RestRequest($"transfer");
+        //    request.AddJsonBody(user);
+        //    request.AddJsonBody(receiverId);
+        //    request.AddJsonBody(amountToSend);
+        //    IRestResponse<Transfer> response = client.Post<Transfer>(request);
+
+
+        //    return response.Data;
+        //}
+
+        //public Transfer UpdateSenderAccount(ApiUser user, double amountToSend)
+        //{
+        //    RestRequest request = new RestRequest($"transfer/{user.UserId}");
+        //    request.AddJsonBody(user);
+        //    request.AddJsonBody(amountToSend);
+        //    IRestResponse<Transfer> response = client.Put<Transfer>(request);
+
+
+        //    return response.Data;
+        //}
+
+        //public Transfer UpdateReceiverAccount(int receiverId, double amountToSend)
+        //{
+        //    RestRequest request = new RestRequest($"transfer/{receiverId}");
+        //    request.AddJsonBody(receiverId);
+        //    request.AddJsonBody(amountToSend);
+        //    IRestResponse<Transfer> response = client.Put<Transfer>(request);
+
+
+        //    return response.Data;
+        //}
 
 
     }

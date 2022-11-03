@@ -17,6 +17,7 @@ namespace TenmoServer.Controllers
         {
             this.transferDao = transfer;
         }
+
       [HttpGet("balance/{user_id}")]
       public ActionResult<Transfer> GetBalance(int user_id)
         {
@@ -26,9 +27,30 @@ namespace TenmoServer.Controllers
 
         }
 
-     
+        [HttpPost()]
+        public ActionResult<Transfer> MakeTransaction(int userId, int receiverId, double balance)
+        {
+            Transfer transfer = transferDao.MakeTransaction(userId, receiverId, balance);
+            return transfer;
+        }
+
+        [HttpPut("transfer/{userId}")]
+        public ActionResult<Transfer> UpdateSenderAccount(int userId, double balance)
+        {
+            Transfer transfer = transferDao.UpdateSenderAccount(userId, balance);
+            return transfer;
+        }
+
+        [HttpPut("transfer/{receiverId}")]
+        public ActionResult<Transfer> UpdateReceiverAccount(int receiverId, double balance)
+        {
+            Transfer transfer = transferDao.UpdateReceiverAccount(receiverId, balance);
+            return transfer;
+        }
 
 
-        
+
+
+
     }
 }

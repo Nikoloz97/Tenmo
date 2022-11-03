@@ -10,7 +10,9 @@ namespace TenmoServer.DAO
     {
         Transfer GetBalance(int user_id);
 
-        Transfer MakeTransaction(int userID, double amountToSend, double Balance);
+        Transfer MakeTransaction(int userId, int receiverId, double amountToSend);
+        Transfer UpdateSenderAccount(int userId, double amountToSend);
+        Transfer UpdateReceiverAccount(int receiverId, double amountToSend);
 
     }
 }

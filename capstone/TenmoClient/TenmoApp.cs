@@ -92,6 +92,7 @@ namespace TenmoClient
             if (menuSelection == 4)
             {
                GetUsers() ;
+               
             }
 
             if (menuSelection == 5)
@@ -197,6 +198,16 @@ namespace TenmoClient
             }
             console.Pause();
         }
+        
+        //public void MakeTransaction()
+        //{
+        //    Transfer transfer = tenmoApiService.MakeTransaction(currentUser, )
+        //}
+
+        //public void UpdateAccount()
+        //{
+
+        //}
     }
-    }
+}
 
