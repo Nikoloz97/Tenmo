@@ -16,6 +16,9 @@ namespace TenmoServer.DAO
         {
             connectionString = dbConnectionString;
         }
+
+      
+
         public Transfer GetBalance(int user_id)
         {
             Transfer transfer = new Transfer();
@@ -86,7 +89,6 @@ namespace TenmoServer.DAO
             };
             return transfer;
         }
-
 
     }
 }

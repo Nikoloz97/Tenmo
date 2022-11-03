@@ -91,7 +91,7 @@ namespace TenmoClient
 
             if (menuSelection == 4)
             {
-                // Send TE bucks
+               GetUsers() ;
             }
 
             if (menuSelection == 5)
@@ -179,5 +179,24 @@ namespace TenmoClient
             }
             console.Pause();
         }
+
+        private void GetUsers()
+        {
+            try
+            {
+               // ApiUser users = tenmoApiService.
+                List<ApiUser> users = tenmoApiService.GetUser();
+                if (users != null)
+                {
+                    console.PrintUsers(users);
+                }
+            }
+            catch (Exception ex)
+            {
+                console.PrintError(ex.Message);
+            }
+            console.Pause();
+        }
     }
-}
+    }
+
