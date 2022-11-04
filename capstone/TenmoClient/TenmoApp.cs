@@ -9,6 +9,7 @@ namespace TenmoClient
     public class TenmoApp
     {
         private ApiUser currentUser = null;
+       
         private readonly TenmoConsoleService console = new TenmoConsoleService();
         private readonly TenmoApiService tenmoApiService;
 
@@ -91,7 +92,9 @@ namespace TenmoClient
 
             if (menuSelection == 4)
             {
-               GetUsers() ;
+               GetUsers();
+               UpdateSenderAccount();
+
                
             }
 
@@ -198,16 +201,26 @@ namespace TenmoClient
             }
             console.Pause();
         }
-        
+
         //public void MakeTransaction()
         //{
         //    Transfer transfer = tenmoApiService.MakeTransaction(currentUser, )
         //}
 
-        //public void UpdateAccount()
-        //{
+        public void UpdateSenderAccount()
+        {
+          Transfer transfer = new Transfer();
+          transfer.Balance = tenmoApiService.GetAccountBalance(currentUser).Balance;
+          transfer = console.PrintAmountToTransfer(transfer);
+          transfer = tenmoApiService.UpdateSenderAccount(currentUser, transfer.UserInput);
+          console.PrintBalance(transfer);
+        }
 
-        //}
+        public void UpdateReceiverAccount()
+        {
+
+        }
+
     }
 }
 

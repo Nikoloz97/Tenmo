@@ -35,16 +35,14 @@ namespace TenmoServer.Controllers
             return transfer;
         }
 
-
-
-        [HttpPut("transfer/{userId}")]
-        public ActionResult<Transfer> UpdateSenderAccount(int userId, double balance)
+        [HttpPut("balance/send/{userId}")]
+        public ActionResult<Transfer> UpdateSenderAccount(int userId, double amountToSend)
         {
-            Transfer transfer = transferDao.UpdateSenderAccount(userId, balance);
+            Transfer transfer = transferDao.UpdateSenderAccount(userId, amountToSend);
             return transfer;
         }
 
-        [HttpPut("transfer/{receiverId}")]
+        [HttpPut("balance/receive/{receiverId}")]
         public ActionResult<Transfer> UpdateReceiverAccount(int receiverId, double balance)
         {
             Transfer transfer = transferDao.UpdateReceiverAccount(receiverId, balance);

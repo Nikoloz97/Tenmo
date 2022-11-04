@@ -48,7 +48,7 @@ namespace TenmoServer.DAO
         }
 
 
-        public Transfer MakeTransaction(int userId, int receiverId, double amountToSend)
+        public Transfer MakeTransaction(int userID, int receiverId, double amountToSend)
         {
             Transfer transfer = new Transfer();
 
@@ -77,22 +77,27 @@ namespace TenmoServer.DAO
 
         }
 
-        public void UpdateSenderAccount(int userId, double amountToSend)
+        public Transfer UpdateSenderAccount(int userId, double amountToSend)
         {
+            Transfer transfer = new Transfer();
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                SqlCommand cmd2 = new SqlCommand("update account set balance -= @amountToSend where account_id = @userId");
+
+                SqlCommand cmd2 = new SqlCommand("update account set balance -= @amountToSend where account_id = @userId", conn);
                 cmd2.Parameters.AddWithValue("@amountToSend", amountToSend);
                 cmd2.Parameters.AddWithValue("@userId", userId);
                 cmd2.ExecuteNonQuery();
             }
-
+            return transfer;
+            
         }
 
-
-        public void UpdateReceiverAccount(int receiverId, double amountToSend)
+        public Transfer UpdateReceiverAccount(int receiverId, double amountToSend)
         {
+            Transfer transfer = new Transfer();
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -103,6 +108,8 @@ namespace TenmoServer.DAO
             }
         }
 
+            return transfer;
+        }
 
 
         private Transfer GetBalanceFromReader(SqlDataReader reader)
