@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using TenmoClient.Models;
 
 namespace TenmoClient.Services
@@ -73,15 +74,16 @@ namespace TenmoClient.Services
             return receivingUser;
         }
 
-        public Transfer PrintAmountToTransfer()
+        public Transfer PrintAmountToTransfer(Transfer transfer)
         {
-            Transfer receivingUser = new Transfer();
+            transfer.ReceiverId = PromptForInteger("Enter userid for who you want to send money to: ");
 
-            double amountInput = PromptForDouble("Enter amount to send:");
+            transfer.UserInput = PromptForDouble("Enter amount to send: ");
 
-            receivingUser.Balance += amountInput;
-
-            return receivingUser;
+            transfer.Balance -= transfer.UserInput;
+           // Console.WriteLine($"current balance {transfer.Balance}");
+            Thread.Sleep(10000);
+            return transfer;
         }
 
 
