@@ -90,6 +90,7 @@ namespace TenmoServer.DAO
                 cmd2.Parameters.AddWithValue("@userId", userId);
                 cmd2.ExecuteNonQuery();
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
                 SqlCommand cmd = new SqlCommand("select * from account where user_id = @user_id", conn);
@@ -101,6 +102,10 @@ namespace TenmoServer.DAO
                     transfer = GetBalanceFromReader(reader);
                 }
 >>>>>>> 4930077c4ca8dd729f529ef0442ab657ace11808
+=======
+
+                
+>>>>>>> 8d3b7216383b339397a91071e20f89efb526094d
             }
             return transfer;
             
@@ -114,6 +119,7 @@ namespace TenmoServer.DAO
             {
                 conn.Open();
 <<<<<<< HEAD
+<<<<<<< HEAD
                 SqlCommand cmd3 = new SqlCommand("update account set balance += @amountToSend where account_id = @receiverId");
 =======
 
@@ -121,6 +127,12 @@ namespace TenmoServer.DAO
 
                 SqlCommand cmd3 = new SqlCommand("update account set balance += @amountToSend where user_id = @receiverId");
 >>>>>>> 4930077c4ca8dd729f529ef0442ab657ace11808
+=======
+
+                
+
+                SqlCommand cmd3 = new SqlCommand("update account set balance += @amountToSend where account_id = @receiverId");
+>>>>>>> 8d3b7216383b339397a91071e20f89efb526094d
                 cmd3.Parameters.AddWithValue("@amountToSend", amountToSend);
                 cmd3.Parameters.AddWithValue("@receiverId", receiverId);
                 cmd3.ExecuteNonQuery();
