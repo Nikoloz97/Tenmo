@@ -59,7 +59,7 @@ namespace TenmoServer.DAO
                     conn.Open();
 
                     SqlCommand cmd = new SqlCommand("SELECT * FROM account WHERE user_id = @user_id", conn);
-                    cmd.Parameters.AddWithValue("@user_id", userId);
+                    cmd.Parameters.AddWithValue("@user_id", userID);
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     if (reader.Read())
@@ -106,11 +106,11 @@ namespace TenmoServer.DAO
                 cmd3.Parameters.AddWithValue("@receiverId", receiverId);
                 cmd3.ExecuteNonQuery();
             }
-        }
-
             return transfer;
+
         }
 
+    
 
         private Transfer GetBalanceFromReader(SqlDataReader reader)
         {

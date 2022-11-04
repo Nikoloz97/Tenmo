@@ -94,8 +94,6 @@ namespace TenmoClient
             {
                GetUsers();
                UpdateSenderAccount();
-
-               
             }
 
             if (menuSelection == 5)
@@ -218,6 +216,7 @@ namespace TenmoClient
 
         public void UpdateReceiverAccount()
         {
+
 
         }
 
