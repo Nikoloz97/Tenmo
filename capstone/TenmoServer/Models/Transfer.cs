@@ -10,6 +10,8 @@ namespace TenmoServer.Models
         public int AccountId { get; set; }
         public int UserId { get; set; }
         public double Balance { get; set; }
+        public double UserInput { get; set; }
+        public int ReceiverId { get; set; }
 
 
         public Transfer()
@@ -30,6 +32,9 @@ namespace TenmoServer.Models
         {
 
         }
+
+        
+
             
 
 

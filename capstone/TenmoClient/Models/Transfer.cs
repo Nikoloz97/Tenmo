@@ -9,7 +9,8 @@ namespace TenmoClient.Models
         public int UserId { get; set; }
         public int AccountId { get; set; }
         public double Balance { get; set; }
-
+        public double UserInput { get; set; }
+        public int ReceiverId { get; set; }
 
     }
 }
