@@ -85,10 +85,22 @@ namespace TenmoServer.DAO
             {
                 conn.Open();
 
-                SqlCommand cmd2 = new SqlCommand("update account set balance -= @amountToSend where account_id = @userId", conn);
+                SqlCommand cmd2 = new SqlCommand("update account set balance -= @amountToSend where user_id = @userId", conn);
                 cmd2.Parameters.AddWithValue("@amountToSend", amountToSend);
                 cmd2.Parameters.AddWithValue("@userId", userId);
                 cmd2.ExecuteNonQuery();
+<<<<<<< HEAD
+=======
+
+                SqlCommand cmd = new SqlCommand("select * from account where user_id = @user_id", conn);
+                cmd.Parameters.AddWithValue("@user_id", userId);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    transfer = GetBalanceFromReader(reader);
+                }
+>>>>>>> 4930077c4ca8dd729f529ef0442ab657ace11808
             }
             return transfer;
             
@@ -101,7 +113,14 @@ namespace TenmoServer.DAO
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
+<<<<<<< HEAD
                 SqlCommand cmd3 = new SqlCommand("update account set balance += @amountToSend where account_id = @receiverId");
+=======
+
+                
+
+                SqlCommand cmd3 = new SqlCommand("update account set balance += @amountToSend where user_id = @receiverId");
+>>>>>>> 4930077c4ca8dd729f529ef0442ab657ace11808
                 cmd3.Parameters.AddWithValue("@amountToSend", amountToSend);
                 cmd3.Parameters.AddWithValue("@receiverId", receiverId);
                 cmd3.ExecuteNonQuery();
