@@ -118,6 +118,16 @@ namespace TenmoServer.DAO
                 cmd3.Parameters.AddWithValue("@amountToSend", amountToSend);
                 cmd3.Parameters.AddWithValue("@receiverId", receiverId);
                 cmd3.ExecuteNonQuery();
+
+                SqlCommand cmd = new SqlCommand("select * from account where user_id = @user_id", conn);
+                cmd.Parameters.AddWithValue("@user_id", receiverId);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    transfer = GetBalanceFromReader(reader);
+                }
+
             }
 
             return transfer;

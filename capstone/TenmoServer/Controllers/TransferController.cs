@@ -42,9 +42,9 @@ namespace TenmoServer.Controllers
         }
 
         [HttpPut("balance/receive/{receiverId}")]
-        public ActionResult<Transfer> UpdateReceiverAccount(int receiverId, double balance)
+        public ActionResult<Transfer> UpdateReceiverAccount(TransferUpdate transferUpdate)
         {
-            Transfer transfer = transferDao.UpdateReceiverAccount(receiverId, balance);
+            Transfer transfer = transferDao.UpdateReceiverAccount(transferUpdate.User, transferUpdate.AmountToSend);
             return transfer;
         }
 
