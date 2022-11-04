@@ -48,7 +48,7 @@ namespace TenmoServer.DAO
         }
 
 
-        public void MakeTransaction(int userID, int receiverId, double amountToSend)
+        public Transfer MakeTransaction(int userID, int receiverId, double amountToSend)
         {
             Transfer transfer = new Transfer();
 
@@ -73,13 +73,13 @@ namespace TenmoServer.DAO
                 throw;
             }
 
-            
+            return transfer;
 
         }
 
-        public void UpdateSenderAccount(int userId, double amountToSend)
+        public Transfer UpdateSenderAccount(int userId, double amountToSend)
         {
-             
+            Transfer transfer = new Transfer();
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -92,13 +92,13 @@ namespace TenmoServer.DAO
 
                 
             }
-
+            return transfer;
             
         }
 
-        public void UpdateReceiverAccount(int receiverId, double amountToSend)
+        public Transfer UpdateReceiverAccount(int receiverId, double amountToSend)
         {
-
+            Transfer transfer = new Transfer();
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -112,7 +112,7 @@ namespace TenmoServer.DAO
                 cmd3.ExecuteNonQuery();
             }
 
-
+            return transfer;
         }
 
 
