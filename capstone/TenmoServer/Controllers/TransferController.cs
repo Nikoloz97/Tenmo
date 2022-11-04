@@ -25,15 +25,14 @@ namespace TenmoServer.Controllers
             return transfer;
 
         }
-
-
-
         [HttpPost()]
         public ActionResult<Transfer> MakeTransaction(int userId, int receiverId, double balance)
         {
             Transfer transfer = transferDao.MakeTransaction(userId, receiverId, balance);
             return transfer;
         }
+
+
 
         [HttpPut("balance/send/{userId}")]
         public ActionResult<Transfer> UpdateSenderAccount(int userId, double amountToSend)
