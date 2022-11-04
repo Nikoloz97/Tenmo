@@ -48,7 +48,7 @@ namespace TenmoServer.DAO
         }
 
 
-        public void MakeTransaction(int userID, int receiverId, double amountToSend)
+        public Transfer MakeTransaction(int userId, int receiverId, double amountToSend)
         {
             Transfer transfer = new Transfer();
 
@@ -58,14 +58,14 @@ namespace TenmoServer.DAO
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("insert into transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount)" +
-                                                                            "(values 2, 2, (select account_id from account where user_id = @userId), " +
-                                                                            "(select account_id from account where user_id = @receiverId), @amountToSend", conn);
-                    cmd.Parameters.AddWithValue("@userId", userID);
-                    cmd.Parameters.AddWithValue("@recieverId", receiverId);
-                    cmd.Parameters.AddWithValue("amountToSend", amountToSend);
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM account WHERE user_id = @user_id", conn);
+                    cmd.Parameters.AddWithValue("@user_id", userId);
                     SqlDataReader reader = cmd.ExecuteReader();
-                                     
+
+                    if (reader.Read())
+                    {
+                        transfer = GetBalanceFromReader(reader);
+                    }
                 }
             }
             catch (SqlException)
@@ -73,47 +73,36 @@ namespace TenmoServer.DAO
                 throw;
             }
 
-            
+            return transfer;
 
         }
 
         public void UpdateSenderAccount(int userId, double amountToSend)
         {
-             
-
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-
                 SqlCommand cmd2 = new SqlCommand("update account set balance -= @amountToSend where account_id = @userId");
                 cmd2.Parameters.AddWithValue("@amountToSend", amountToSend);
                 cmd2.Parameters.AddWithValue("@userId", userId);
                 cmd2.ExecuteNonQuery();
-
-                
             }
 
-            
         }
+
 
         public void UpdateReceiverAccount(int receiverId, double amountToSend)
         {
-
-
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-
-                
-
                 SqlCommand cmd3 = new SqlCommand("update account set balance += @amountToSend where account_id = @receiverId");
                 cmd3.Parameters.AddWithValue("@amountToSend", amountToSend);
                 cmd3.Parameters.AddWithValue("@receiverId", receiverId);
                 cmd3.ExecuteNonQuery();
             }
-
-
         }
+
 
 
         private Transfer GetBalanceFromReader(SqlDataReader reader)
