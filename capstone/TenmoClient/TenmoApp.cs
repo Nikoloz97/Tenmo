@@ -209,6 +209,7 @@ namespace TenmoClient
         {
           Transfer transfer = new Transfer();
           transfer.Balance = tenmoApiService.GetAccountBalance(currentUser).Balance;
+          transfer.UserId = currentUser.UserId;
           transfer = console.PrintAmountToTransfer(transfer);
           transfer = tenmoApiService.UpdateSenderAccount(currentUser, transfer.UserInput);
           console.PrintBalance(transfer);

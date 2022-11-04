@@ -46,8 +46,8 @@ namespace TenmoClient.Services
         public Transfer UpdateSenderAccount(ApiUser user, double amountToSend)
         {
             RestRequest request = new RestRequest($"transfer/balance/send/{user.UserId}");
-            request.AddJsonBody(user);
-            request.AddJsonBody(amountToSend);
+            // request.AddJsonBody(user);
+            request.AddJsonBody(new TransferUpdate(user.UserId, amountToSend));
             IRestResponse<Transfer> response = client.Put<Transfer>(request);
 
 
@@ -57,7 +57,7 @@ namespace TenmoClient.Services
         public Transfer UpdateReceiverAccount(int receiverId, double amountToSend)
         {
             RestRequest request = new RestRequest($"transfer/balance/receive/{receiverId}");
-            request.AddJsonBody(receiverId);
+           request.AddJsonBody(receiverId);
             request.AddJsonBody(amountToSend);
             IRestResponse<Transfer> response = client.Put<Transfer>(request);
 

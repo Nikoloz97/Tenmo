@@ -35,9 +35,9 @@ namespace TenmoServer.Controllers
 
 
         [HttpPut("balance/send/{userId}")]
-        public ActionResult<Transfer> UpdateSenderAccount(int userId, double amountToSend)
+        public ActionResult<Transfer> UpdateSenderAccount(TransferUpdate transferUpdate)
         {
-            Transfer transfer = transferDao.UpdateSenderAccount(userId, amountToSend);
+            Transfer transfer = transferDao.UpdateSenderAccount(transferUpdate.User, transferUpdate.AmountToSend);
             return transfer;
         }
 
