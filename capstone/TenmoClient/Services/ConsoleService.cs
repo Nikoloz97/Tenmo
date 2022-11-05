@@ -2,6 +2,10 @@
 
 namespace TenmoClient.Services
 {
+
+    // Here, you can find supporting methods for TenmoConsoleService (that's that big boy)
+
+
     public class ConsoleService
     {
         /************************************************************
