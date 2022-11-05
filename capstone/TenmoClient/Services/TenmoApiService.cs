@@ -1,7 +1,6 @@
 ﻿using RestSharp;
 using System.Collections.Generic;
 using TenmoClient.Models;
-//using TenmoServer.Models;
 
 namespace TenmoClient.Services
 {
@@ -11,7 +10,7 @@ namespace TenmoClient.Services
 
         public TenmoApiService(string apiUrl) : base(apiUrl) { }
 
-        // Add methods to call api here...
+        // Add methods to call api (controller) here...
         public Transfer GetAccountBalance(ApiUser user)
         {
             
@@ -45,21 +44,30 @@ namespace TenmoClient.Services
 
         public Transfer UpdateSenderAccount(ApiUser user, double amountToSend)
         {
+            // Calls for the PUT method in Transfer-controller with this path 
             RestRequest request = new RestRequest($"transfer/balance/send/{user.UserId}");
-            // request.AddJsonBody(user);
+
+            // Need this line for PUT or PUSH (otherwise data is lost) 
             request.AddJsonBody(new TransferUpdate(user.UserId, amountToSend));
+
+
             IRestResponse<Transfer> response = client.Put<Transfer>(request);
 
 
             return response.Data;
         }
 
-        public Transfer UpdateReceiverAccount(int receiverId, double amountToSend)
+        public Transfer UpdateReceiverAccount(int receiver_id, double amountToSend)
         {
-            RestRequest request = new RestRequest($"transfer/balance/receive/{receiverId}");
-           request.AddJsonBody(receiverId);
-            request.AddJsonBody(amountToSend);
-            IRestResponse<Transfer> response = client.Put<Transfer>(request);
+            // Calls for the PUT method in Transfer-controller with this path
+           RestRequest request = new RestRequest($"transfer/balance/receive/{receiver_id}");
+
+            // Need this line for PUT or PUSH (otherwise data is lost) 
+            request.AddJsonBody(new TransferUpdate(receiver_id, amountToSend));
+
+            // Lets save our response in an object
+            // Client is a special key-word (not an object) 
+           IRestResponse<Transfer> response = client.Put<Transfer>(request);
 
 
             return response.Data;

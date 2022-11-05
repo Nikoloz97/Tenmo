@@ -5,6 +5,7 @@ using TenmoClient.Models;
 
 namespace TenmoClient.Services
 {
+
     public class TenmoConsoleService : ConsoleService
     {
         /************************************************************
@@ -52,39 +53,40 @@ namespace TenmoClient.Services
             return loginUser;
         }
 
-        public void PrintBalance(Transfer transfer)
+      
+
+        public Transfer PromptAmountandReceiver(Transfer transfer)
         {
-            Console.WriteLine($"Your current balance is: {transfer.Balance}");
-            
-        }
+            transfer.ReceiverId = PromptForInteger("Enter userid for who you want to send funds");
 
-        public Transfer PrintSelectUser()
-        {
-            int idInput = PromptForInteger("Id for the user you're sending to:");
+            transfer.TransferAmount = PromptForDouble("Enter amount to send");
 
-            double receiverBalance = 0;
-
-            Transfer receivingUser = new Transfer
-            {
-                UserId = idInput,
-                Balance = receiverBalance
-           
-            };
-
-            return receivingUser;
-        }
-
-        public Transfer PrintAmountToTransfer(Transfer transfer)
-        {
-            transfer.ReceiverId = PromptForInteger("Enter userid for who you want to send money to: ");
-
-            transfer.UserInput = PromptForDouble("Enter amount to send: ");
-
-            transfer.Balance -= transfer.UserInput;
-           // Console.WriteLine($"current balance {transfer.Balance}");
-            Thread.Sleep(10000);
             return transfer;
         }
+
+
+        public void PrintBalance(Transfer transfer)
+        {
+            Console.WriteLine($"Your current balance: {transfer.Balance}");
+            Pause();
+        }
+
+        public void PrintUserBalance(Transfer transfer)
+        {
+            transfer.Balance -= transfer.TransferAmount;
+            Console.WriteLine($"Your current balance: {transfer.Balance}");
+            Pause();
+        }
+
+
+        public void PrintReceiverBalance(Transfer transfer)
+        {
+            transfer.Balance += transfer.TransferAmount;
+            Console.WriteLine($"Receiver's balance is now: {transfer.Balance}");
+            Pause();
+        }
+
+
 
 
 

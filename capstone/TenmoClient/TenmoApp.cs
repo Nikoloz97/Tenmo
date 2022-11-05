@@ -94,8 +94,7 @@ namespace TenmoClient
             {
                GetUsers();
                UpdateSenderAccount();
-
-               
+               UpdateReceiverAccount();
             }
 
             if (menuSelection == 5)
@@ -188,7 +187,6 @@ namespace TenmoClient
         {
             try
             {
-               // ApiUser users = tenmoApiService.
                 List<ApiUser> users = tenmoApiService.GetUser();
                 if (users != null)
                 {
@@ -210,16 +208,39 @@ namespace TenmoClient
         public void UpdateSenderAccount()
         {
           Transfer transfer = new Transfer();
+
+            // GetAccountBalance = returns transfer object with user's balance
           transfer.Balance = tenmoApiService.GetAccountBalance(currentUser).Balance;
+
+            // currentUser = created in "Login" function above in this file
           transfer.UserId = currentUser.UserId;
-          transfer = console.PrintAmountToTransfer(transfer);
-          transfer = tenmoApiService.UpdateSenderAccount(currentUser, transfer.UserInput);
-          console.PrintBalance(transfer);
+
+            // console = refers to tenmoconsoleservice
+            // prompts for user to set transfer's receiverID and transferAmount
+          transfer = console.PromptAmountandReceiver(transfer);
+
+
+           transfer = tenmoApiService.UpdateSenderAccount(currentUser, transfer.TransferAmount);
+
+           console.PrintUserBalance(transfer);
         }
 
         public void UpdateReceiverAccount()
         {
+            Transfer transfer = new Transfer();
 
+            // Might not need this first line? 
+            transfer.UserId = currentUser.UserId;
+
+            // console = tenmoconsoleservice
+            // prompts for user to set transfer's receiverID and transferAmount
+            transfer = console.PromptAmountandReceiver(transfer);
+
+
+            // TenmoApiService is going to "call" the controller
+            transfer.Balance = tenmoApiService.UpdateReceiverAccount(transfer.ReceiverId, transfer.TransferAmount).Balance;
+
+            console.PrintReceiverBalance(transfer);
         }
 
     }
