@@ -57,13 +57,34 @@ namespace TenmoClient.Services
 
         public Transfer PromptAmountandReceiver(Transfer transfer)
         {
+
             transfer.ReceiverId = PromptForInteger("Enter userid for who you want to send funds");
 
+            while (transfer.ReceiverId == transfer.UserId)
+            {
+                Console.WriteLine("You can't send funds to yourself. Try again");
+                transfer.ReceiverId = PromptForInteger("Enter userid for who you want to send funds");
+            }
+
             transfer.TransferAmount = PromptForDouble("Enter amount to send");
+
+            while (transfer.Balance < transfer.TransferAmount)
+            {
+                Console.WriteLine("You don't have enough money broke boy/girl. Try again");
+                transfer.TransferAmount = PromptForDouble("Enter amount to send");
+            }
+
+            while (transfer.TransferAmount <= 0)
+            {
+                Console.WriteLine("That's an invalid transfer amount. Try again");
+                transfer.TransferAmount = PromptForDouble("Enter amount to send");
+
+            }
 
             return transfer;
         }
 
+       
 
         public void PrintBalance(Transfer transfer)
         {
@@ -81,7 +102,6 @@ namespace TenmoClient.Services
 
         public void PrintReceiverBalance(Transfer transfer)
         {
-            transfer.Balance += transfer.TransferAmount;
             Console.WriteLine($"Receiver's balance is now: {transfer.Balance}");
             Pause();
         }
