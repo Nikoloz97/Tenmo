@@ -7,7 +7,7 @@ namespace TenmoClient.Models
     public class TransferUpdate
     {
 
-        public int User { get; set; }
+        public int UserID { get; set; }
 
         public double AmountToSend { get; set; }
         public TransferUpdate()
@@ -15,9 +15,9 @@ namespace TenmoClient.Models
 
         }
 
-        public TransferUpdate(int user, double amountToSend)
+        public TransferUpdate(int user_id, double amountToSend)
         {
-            this.User = user;
+            this.UserID = user_id;
             this.AmountToSend = amountToSend;
 
         }
