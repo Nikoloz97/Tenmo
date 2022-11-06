@@ -62,7 +62,8 @@ namespace TenmoClient.Services
             // Calls for the PUT method in Transfer-controller with this path
            RestRequest request = new RestRequest($"transfer/balance/receive/{receiver_id}");
 
-            // Need this line for PUT or PUSH (otherwise data is lost) 
+            // Need this line for PUT or POST (otherwise data is lost) 
+            // If receiver account stops updating, issue is here. We added a third property in TransferUpdate class
             request.AddJsonBody(new TransferUpdate(receiver_id, amountToSend));
 
             // Lets save our response in an object
@@ -72,6 +73,39 @@ namespace TenmoClient.Services
 
             return response.Data;
         }
+
+        public Transfer LogTransfer(int user_id, int receiver_id, double amountToTransfer)
+        {
+            RestRequest request = new RestRequest($"transfer/Log");
+
+            request.AddJsonBody(new TransferUpdate(user_id, amountToTransfer, receiver_id));
+
+          
+            IRestResponse<Transfer> response = client.Post<Transfer>(request);
+
+
+            return response.Data;
+        }
+
+        public List<Transfer> DisplaySendingLog(int user_id)
+        {
+            RestRequest request = new RestRequest($"transfer/Log/Sending/{user_id}");
+
+            IRestResponse<List<Transfer>> response = client.Get<List<Transfer>>(request);
+
+            return response.Data;
+        }
+
+        public List<Transfer> DisplayReceveingLog(int user_id)
+        {
+            RestRequest request = new RestRequest($"transfer/Log/Receiving/{user_id}");
+
+            IRestResponse<List<Transfer>> response = client.Get<List<Transfer>>(request);
+
+            return response.Data;
+        }
+
+
 
 
     }

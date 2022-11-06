@@ -9,7 +9,11 @@ namespace TenmoClient.Models
 
         public int UserID { get; set; }
 
+        public int ReceiverID { get; set; }
+
         public double AmountToSend { get; set; }
+
+
         public TransferUpdate()
         {
 
@@ -19,6 +23,14 @@ namespace TenmoClient.Models
         {
             this.UserID = user_id;
             this.AmountToSend = amountToSend;
+
+        }
+
+        public TransferUpdate(int user_id, double amountToSend, int receiver_id)
+        {
+            this.UserID = user_id;
+            this.AmountToSend = amountToSend;
+            this.ReceiverID = receiver_id;
 
         }
     }

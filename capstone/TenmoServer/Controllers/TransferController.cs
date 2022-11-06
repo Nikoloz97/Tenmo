@@ -29,13 +29,43 @@ namespace TenmoServer.Controllers
         }
 
 
+        [HttpGet("Log/Sending/{user_id}")]
+        public ActionResult<List<Transfer>> DisplaySendingLog (int user_id)
+        {
+            List<Transfer> transferList = transferDao.DisplaySendingLog(user_id);
+
+            return transferList;
+
+        }
+
+
+        [HttpGet("Log/Receiving/{user_id}")]
+        public ActionResult<List<Transfer>> DisplayReceivingLog (int user_id)
+        {
+            List<Transfer> transferList = transferDao.DisplayReceivingLog(user_id);
+
+            return transferList;
+
+        }
+
+
+
         // Do we need this??
-        [HttpPost()]
+        /*[HttpPost()]
         public ActionResult<Transfer> MakeTransaction(int userId, int receiverId, double balance)
         {
             Transfer transfer = transferDao.MakeTransaction(userId, receiverId, balance);
             return transfer;
+        }*/
+
+
+        [HttpPost("Log")]
+        public ActionResult<Transfer> LogTransfer(TransferUpdate transferUpdate)
+        {
+            Transfer transfer = transferDao.LogTransfer(transferUpdate.UserID, transferUpdate.ReceiverID, transferUpdate.AmountToSend);
+            return transfer;
         }
+
 
 
 
@@ -55,6 +85,8 @@ namespace TenmoServer.Controllers
             return transfer;
         }
 
+
+        
 
 
 
