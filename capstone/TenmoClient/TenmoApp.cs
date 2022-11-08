@@ -117,6 +117,7 @@ namespace TenmoClient
                 tenmoApiService.Logout();
                 console.PrintSuccess("You are now logged out");
             }
+            // Keep the main menu loop going
 
             return true;    // Keep the main menu loop going
         }
@@ -267,7 +268,7 @@ namespace TenmoClient
 
             foreach (Transfer transfer in transferList)
             {
-                Console.WriteLine($"TransferID: {transfer.TransferId}, From: {transfer.Username}, Amount: {transfer.TransferAmount:C2}");
+                Console.WriteLine($"TransferID: {transfer.TransferId}, To: {transfer.Username}, Amount: {transfer.TransferAmount:C2}");
             }
 
         }
@@ -280,7 +281,7 @@ namespace TenmoClient
 
             foreach (Transfer transfer in transferList)
             {
-                Console.WriteLine($"TransferID: {transfer.TransferId}, To: {transfer.Username}, Amount: {transfer.TransferAmount:C2}");
+                Console.WriteLine($"TransferID: {transfer.TransferId}, From: {transfer.Username}, Amount: {transfer.TransferAmount:C2}");
 
             }
         }
