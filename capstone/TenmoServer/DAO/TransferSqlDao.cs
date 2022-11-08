@@ -133,25 +133,27 @@ namespace TenmoServer.DAO
                     transferList.Add(transfer);
                 }
 
-
                 // 2. Adds username property for each item in list based on their account id's from step 1.... 
+                // NOTE: Had to enable MARS (activated it in connection string in Startup.cs)
                 foreach (Transfer Item in transferList)
-                {
+            {
 
                 SqlCommand cmd2 = new SqlCommand("select username from tenmo_user join account on tenmo_user.user_id = account.user_id where account_id = @account_to ", conn);
 
 
                 cmd2.Parameters.AddWithValue("@account_to", Item.RecieverAccountId);
 
+                SqlDataReader reader_2 = cmd2.ExecuteReader();
 
-                while (reader.Read())
+
+                while (reader_2.Read())
                 {
-                    Transfer transfer = GetTransferUsernameFromReader(reader);
+                    Transfer transfer = GetTransferUsernameFromReader(reader_2);
                     Item.Username = transfer.Username;
                 }
-
-                }
             }
+            }
+
             return transferList;
 
         }
@@ -190,10 +192,12 @@ namespace TenmoServer.DAO
 
                     cmd2.Parameters.AddWithValue("@account_from", Item.SenderAccountId);
 
+                    SqlDataReader reader_2 = cmd2.ExecuteReader();
 
-                    while (reader.Read())
+
+                    while (reader_2.Read())
                     {
-                        Transfer transfer = GetTransferUsernameFromReader(reader);
+                        Transfer transfer = GetTransferUsernameFromReader(reader_2);
                         Item.Username = transfer.Username;
                     }
 
