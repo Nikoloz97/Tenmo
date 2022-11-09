@@ -92,8 +92,7 @@ namespace TenmoServer.DAO
                 conn.Open();
 
 
-                SqlCommand cmd = new SqlCommand("insert into transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount)" +
-                    "values(2, 2, (select account_id from account where user_id = @User_ID), (select account_id from account where user_id = @Receiver_ID), @AmountToTransfer)", conn);
+                SqlCommand cmd = new SqlCommand("insert into transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) values(2, 2, (select account_id from account where user_id = @User_ID), (select account_id from account where user_id = @Receiver_ID), @AmountToTransfer)", conn);
 
                 cmd.Parameters.AddWithValue("@User_ID", user_id);
                 cmd.Parameters.AddWithValue("@Receiver_ID", receiver_id);
@@ -110,6 +109,8 @@ namespace TenmoServer.DAO
 
         }
 
+
+        // The "to:"
         public List<Transfer> DisplaySendingLog (int user_id)
         {
             List<Transfer> transferList = new List<Transfer>();
@@ -118,26 +119,47 @@ namespace TenmoServer.DAO
             {
                 conn.Open();
 
-                // Sending out info...
-                SqlCommand cmd = new SqlCommand("select transfer_id, username, amount from account join transfer on account.account_id = transfer.account_from join tenmo_user on account.user_id = tenmo_user.user_id where account.user_id = @userID", conn);
+                // 1. Get rows of account_id, transfer_id, and amount from which user sent money...
+                SqlCommand cmd = new SqlCommand("select account_to, amount, transfer_id from transfer join account on transfer.account_from = account.account_id join tenmo_user on account.user_id = tenmo_user.user_id where account.user_id = @user_id; ", conn);
 
-                cmd.Parameters.AddWithValue("@userID", user_id);
+                cmd.Parameters.AddWithValue("@user_id", user_id);
                
                 SqlDataReader reader = cmd.ExecuteReader();
 
 
                 while (reader.Read())
                 {
-                    Transfer transfer = GetTransferFromReader(reader);
+                    Transfer transfer = GetTransferTosFromReader(reader);
                     transferList.Add(transfer);
                 }
 
+                // 2. Adds username property for each item in list based on their account id's from step 1.... 
+                // NOTE: Had to enable MARS (activated it in connection string in Startup.cs)
+                foreach (Transfer Item in transferList)
+            {
+
+                SqlCommand cmd2 = new SqlCommand("select username from tenmo_user join account on tenmo_user.user_id = account.user_id where account_id = @account_to ", conn);
+
+
+                cmd2.Parameters.AddWithValue("@account_to", Item.RecieverAccountId);
+
+                SqlDataReader reader_2 = cmd2.ExecuteReader();
+
+
+                while (reader_2.Read())
+                {
+                    Transfer transfer = GetTransferUsernameFromReader(reader_2);
+                    Item.Username = transfer.Username;
+                }
             }
+            }
+
             return transferList;
 
         }
 
 
+        // The "From:"
         public List<Transfer> DisplayReceivingLog(int user_id)
         {
             List<Transfer> transferList = new List<Transfer>();
@@ -145,21 +167,43 @@ namespace TenmoServer.DAO
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("select transfer_id, username, amount from account join transfer on account.account_id = transfer.account_to join tenmo_user on account.user_id = tenmo_user.user_id where account.user_id = @userID", conn);
 
-                cmd.Parameters.AddWithValue("@userID", user_id);
+                // 1. Get rows of account_id, transfer_id, and amount from which user sent money...
+                SqlCommand cmd = new SqlCommand("select account_from,amount, transfer_id from transfer join account on transfer.account_to = account.account_id join tenmo_user on account.user_id = tenmo_user.user_id where account.user_id = @user_id; ", conn);
+
+                cmd.Parameters.AddWithValue("@user_id", user_id);
 
                 SqlDataReader reader = cmd.ExecuteReader();
 
 
                 while (reader.Read())
                 {
-                    Transfer transfer = GetTransferFromReader(reader);
+                    Transfer transfer = GetTransferFromsFromReader(reader);
                     transferList.Add(transfer);
                 }
 
-                return transferList;
+
+                // 2. Adds username property for each item in list based on their account id's from step 1.... 
+                foreach (Transfer Item in transferList)
+                {
+
+                    SqlCommand cmd2 = new SqlCommand("select username from tenmo_user join account on tenmo_user.user_id = account.user_id where account_id = @account_from", conn);
+
+
+                    cmd2.Parameters.AddWithValue("@account_from", Item.SenderAccountId);
+
+                    SqlDataReader reader_2 = cmd2.ExecuteReader();
+
+
+                    while (reader_2.Read())
+                    {
+                        Transfer transfer = GetTransferUsernameFromReader(reader_2);
+                        Item.Username = transfer.Username;
+                    }
+
+                }
             }
+            return transferList;
         }
 
 
@@ -230,18 +274,49 @@ namespace TenmoServer.DAO
 
         // Converts sql data -> C# data
 
+
         private Transfer GetTransferFromReader(SqlDataReader reader)
         {
             Transfer transfer = new Transfer()
             {
-                TransferId = Convert.ToInt32(reader["transfer_id"]),
-                Username = Convert.ToString(reader["username"]),
-                TransferAmount = Convert.ToDouble(reader["amount"]),
-
-                /*Transfer_type_id = Convert.ToInt32(reader["transfer_type_id"]),
+                Transfer_type_id = Convert.ToInt32(reader["transfer_type_id"]),
                 Transfer_status_id = Convert.ToInt32(reader["transfer_status_id"]),
                 SenderAccountId = Convert.ToInt32(reader["account_from"]),
-                RecieverAccountId = Convert.ToInt32(reader["account_to"]),*/
+                RecieverAccountId = Convert.ToInt32(reader["account_to"]),
+                TransferAmount = Convert.ToDouble(reader["amount"]),
+               
+            };
+            return transfer;
+        }
+
+
+        private Transfer GetTransferTosFromReader(SqlDataReader reader)
+        {
+            Transfer transfer = new Transfer()
+            {
+                TransferId = Convert.ToInt32(reader["transfer_id"]),
+                TransferAmount = Convert.ToDouble(reader["amount"]),
+                RecieverAccountId = Convert.ToInt32(reader["account_to"]),
+            };
+            return transfer;
+        }
+
+        private Transfer GetTransferFromsFromReader(SqlDataReader reader)
+        {
+            Transfer transfer = new Transfer()
+            {
+                TransferId = Convert.ToInt32(reader["transfer_id"]),
+                TransferAmount = Convert.ToDouble(reader["amount"]),
+                SenderAccountId = Convert.ToInt32(reader["account_from"]),
+            };
+            return transfer;
+        }
+
+        private Transfer GetTransferUsernameFromReader(SqlDataReader reader)
+        {
+            Transfer transfer = new Transfer()
+            {
+                Username = Convert.ToString(reader["username"]),
             };
             return transfer;
         }

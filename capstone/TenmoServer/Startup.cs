@@ -26,7 +26,7 @@ namespace TenmoServer
         {
             services.AddControllers();
 
-            string connectionString = Configuration.GetConnectionString("Project");
+            string connectionString = Configuration.GetConnectionString("Project") + "MultipleActiveResultSets=True";
 
             // configure jwt authentication
             var key = Encoding.ASCII.GetBytes(Configuration["JwtSecret"]);
