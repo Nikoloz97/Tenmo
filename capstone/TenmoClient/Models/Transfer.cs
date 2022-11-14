@@ -14,6 +14,8 @@ namespace TenmoClient.Models
         public int ReceiverId { get; set; }
 
         public int TransferId { get; set; }
+        public string status_desc { get; set; }
+        public string type_desc { get; set; }
         public int Transfer_type_id { get; set; }
         public int Transfer_status_id { get; set; }
         public int SenderAccountId { get; set; }

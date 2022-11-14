@@ -9,7 +9,7 @@ namespace TenmoClient
     public class TenmoApp
     {
         private ApiUser currentUser = null;
-       
+        private int transferIdSelecion;
         private readonly TenmoConsoleService console = new TenmoConsoleService();
         private readonly TenmoApiService tenmoApiService;
 
@@ -83,11 +83,22 @@ namespace TenmoClient
             if (menuSelection == 2)
             {
                 // View your past transfers
-
-                DisplaySenderLog();
-                DisplayReceivingLog();
+                Dictionary<int, string> sendingDict = DisplaySenderLog();
+                Dictionary<int, string> receivingDict = DisplayReceivingLog();
                 console.Pause();
+                transferIdSelecion = console.PromptForInteger("Please enter transfer ID to view details (0 to cancel)");
 
+
+                if (sendingDict.ContainsKey(transferIdSelecion))
+                {
+                    DisplayFullSenderLog();
+                }
+                if (receivingDict.ContainsKey(transferIdSelecion))
+                {
+                    DisplayFullReceivingLog();
+                }
+
+                console.Pause("Press any key to continue");
             }
 
             if (menuSelection == 3)
@@ -97,11 +108,11 @@ namespace TenmoClient
 
             if (menuSelection == 4)
             {
-               GetUsers();
+                GetUsers();
 
                 // TO DO: Merge these two functions into one 
-               UpdateSenderAccount();
-               UpdateReceiverAccount();
+                UpdateSenderAccount();
+                UpdateReceiverAccount();
 
 
             }
@@ -217,23 +228,23 @@ namespace TenmoClient
 
         public void UpdateSenderAccount()
         {
-          Transfer transfer = new Transfer();
+            Transfer transfer = new Transfer();
 
             // GetAccountBalance = returns transfer object with user's balance
-          transfer.Balance = tenmoApiService.GetAccountBalance(currentUser).Balance;
+            transfer.Balance = tenmoApiService.GetAccountBalance(currentUser).Balance;
 
             // currentUser = created in "Login" function above in this file
-          transfer.UserId = currentUser.UserId;
+            transfer.UserId = currentUser.UserId;
 
             // console = refers to tenmoconsoleservice
             // prompts for user to set transfer's receiverID and transferAmount
-          transfer = console.PromptAmountandReceiver(transfer);
+            transfer = console.PromptAmountandReceiver(transfer);
 
-          tenmoApiService.LogTransfer(transfer.UserId, transfer.ReceiverId, transfer.TransferAmount);
+            tenmoApiService.LogTransfer(transfer.UserId, transfer.ReceiverId, transfer.TransferAmount);
 
-          transfer = tenmoApiService.UpdateSenderAccount(currentUser, transfer.TransferAmount);
+            transfer = tenmoApiService.UpdateSenderAccount(currentUser, transfer.TransferAmount);
 
-          console.PrintUserBalance(transfer);
+            console.PrintUserBalance(transfer);
         }
 
 
@@ -259,8 +270,9 @@ namespace TenmoClient
         }
 
 
-        public void DisplaySenderLog()
+        public Dictionary<int, string> DisplaySenderLog()
         {
+            Dictionary<int, string> transferDict = new Dictionary<int, string>();
             List<Transfer> transferList = new List<Transfer>();
 
             transferList = tenmoApiService.DisplaySendingLog(currentUser.UserId);
@@ -269,12 +281,30 @@ namespace TenmoClient
             foreach (Transfer transfer in transferList)
             {
                 Console.WriteLine($"TransferID: {transfer.TransferId}, To: {transfer.Username}, Amount: {transfer.TransferAmount:C2}");
+
+                // HERE
+                transferDict.Add(transfer.TransferId, "sending");
             }
 
+            return transferDict;
         }
 
-        public void DisplayReceivingLog()
+
+
+        public void DisplayFullSenderLog()
         {
+            Transfer transfer = new Transfer();
+
+            transfer = tenmoApiService.DisplayFullSendingLog(currentUser.UserId, transferIdSelecion);
+
+            Console.WriteLine($"ID: {transfer.TransferId}, From: Me, To: {transfer.Username}, Type: {transfer.type_desc}, Status: {transfer.status_desc}, Amount: {transfer.TransferAmount:C2}");
+        }
+
+
+        public Dictionary<int, string> DisplayReceivingLog()
+        {
+            Dictionary<int, string> transferDict = new Dictionary<int, string>();
+
             List<Transfer> transferList = new List<Transfer>();
 
             transferList = tenmoApiService.DisplayReceveingLog(currentUser.UserId);
@@ -282,10 +312,29 @@ namespace TenmoClient
             foreach (Transfer transfer in transferList)
             {
                 Console.WriteLine($"TransferID: {transfer.TransferId}, From: {transfer.Username}, Amount: {transfer.TransferAmount:C2}");
-
+                //HERE
+                transferDict.Add(transfer.TransferId, "receiving");
             }
+            return transferDict;
+        }
+
+
+        public void DisplayFullReceivingLog()
+        {
+            Transfer transfer = new Transfer();
+
+            transfer = tenmoApiService.DisplayFullReceivingLog(currentUser.UserId, transferIdSelecion);
+
+            Console.WriteLine($"ID: {transfer.TransferId}, From: {transfer.Username}, To: Me, Type: {transfer.type_desc}, Status: {transfer.status_desc}, Amount: {transfer.TransferAmount:C2}");
+
         }
 
     }
 }
+
+
+
+
+
+
 
