@@ -30,24 +30,14 @@ namespace TenmoClient.Services
             return response.Data;
         }
 
-        //public Transfer MakeTransaction(ApiUser user, int receiverId, double amountToSend)
-        //{
-        //    RestRequest request = new RestRequest($"transfer");
-        //    request.AddJsonBody(user);
-        //    request.AddJsonBody(receiverId);
-        //    request.AddJsonBody(amountToSend);
-        //    IRestResponse<Transfer> response = client.Post<Transfer>(request);
-
-
-        //    return response.Data;
-        //}
-
+       
         public Transfer UpdateSenderAccount(ApiUser user, double amountToSend)
         {
             // Calls for the PUT method in Transfer-controller with this path 
             RestRequest request = new RestRequest($"transfer/balance/send/{user.UserId}");
 
             // Need this line for PUT or PUSH (otherwise data is lost) 
+            // HERE
             request.AddJsonBody(new TransferUpdate(user.UserId, amountToSend));
 
 
@@ -96,11 +86,31 @@ namespace TenmoClient.Services
             return response.Data;
         }
 
+        public Transfer DisplayFullSendingLog(int user_id, int transfer_id)
+        {
+            RestRequest request = new RestRequest($"transfer/Log/FullSending/{user_id}/{transfer_id}");
+
+            IRestResponse<Transfer> response = client.Get<Transfer>(request);
+
+            return response.Data;
+        }
+
+
+
         public List<Transfer> DisplayReceveingLog(int user_id)
         {
             RestRequest request = new RestRequest($"transfer/Log/Receiving/{user_id}");
 
             IRestResponse<List<Transfer>> response = client.Get<List<Transfer>>(request);
+
+            return response.Data;
+        }
+
+        public Transfer DisplayFullReceivingLog(int user_id, int transfer_id)
+        {
+            RestRequest request = new RestRequest($"transfer/Log/FullReceiving/{user_id}/{transfer_id}");
+
+            IRestResponse<Transfer> response = client.Get<Transfer>(request);
 
             return response.Data;
         }

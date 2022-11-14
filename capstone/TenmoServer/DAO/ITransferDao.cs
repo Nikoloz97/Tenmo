@@ -15,7 +15,13 @@ namespace TenmoServer.DAO
         Transfer UpdateReceiverAccount(int receiverId, double amountToSend);
         Transfer LogTransfer(int user_id, int receiver_id, double amountToTransfer);
         List<Transfer> DisplaySendingLog(int user_id);
+        Transfer DisplayFullSendingLog(int user_id, int transfer_id);
         List<Transfer> DisplayReceivingLog(int user_id);
+        Transfer DisplayFullReceivingLog(int user_id, int transfer_id);
+
+
+
+
 
     }
 }
