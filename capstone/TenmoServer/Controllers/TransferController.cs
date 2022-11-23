@@ -67,20 +67,20 @@ namespace TenmoServer.Controllers
         }
 
 
-        [HttpPost("Log")]
-        public ActionResult<Transfer> LogTransfer(TransferUpdate transferUpdate)
+        [HttpPost("Log/test/{user_id}/{reciever_id}/{amountToSend}")]
+        public ActionResult<Transfer> LogTransfer(int user_id, int reciever_id, int amountToSend)
         {
-            Transfer transfer = transferDao.LogTransfer(transferUpdate.UserID, transferUpdate.ReceiverID, transferUpdate.AmountToSend);
+            Transfer transfer = transferDao.LogTransfer(user_id, reciever_id, amountToSend);
             return transfer;
         }
 
 
 
 
-        [HttpPut("balance/send/{userId}")]
-        public ActionResult<Transfer> UpdateSenderAccount(TransferUpdate transferUpdate)
+        [HttpPut("balance/send/{userId}/{amountToSend}")]
+        public ActionResult<Transfer> UpdateSenderAccount(int userId, double amountToSend)
         {
-            Transfer transfer = transferDao.UpdateSenderAccount(transferUpdate.UserID, transferUpdate.AmountToSend);
+            Transfer transfer = transferDao.UpdateSenderAccount(userId, amountToSend);
             return transfer;
         }
 

@@ -19,9 +19,9 @@ namespace TenmoClient.Models
 
         }
 
-        public TransferUpdate(int user_id, double amountToSend)
+        public TransferUpdate(int receiver_id, double amountToSend)
         {
-            this.UserID = user_id;
+            this.UserID = receiver_id;
             this.AmountToSend = amountToSend;
 
         }

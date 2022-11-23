@@ -30,15 +30,16 @@ namespace TenmoClient.Services
             return response.Data;
         }
 
+
+
+
+
+
        
         public Transfer UpdateSenderAccount(ApiUser user, double amountToSend)
         {
-            // Calls for the PUT method in Transfer-controller with this path 
-            RestRequest request = new RestRequest($"transfer/balance/send/{user.UserId}");
-
-            // Need this line for PUT or PUSH (otherwise data is lost) 
-            // HERE
-            request.AddJsonBody(new TransferUpdate(user.UserId, amountToSend));
+            // Calls for the PUT method in controller with this path 
+            RestRequest request = new RestRequest($"transfer/balance/send/{user.UserId}/{amountToSend}");
 
 
             IRestResponse<Transfer> response = client.Put<Transfer>(request);
@@ -49,14 +50,11 @@ namespace TenmoClient.Services
 
         public Transfer UpdateReceiverAccount(int receiver_id, double amountToSend)
         {
-            // Calls for the PUT method in Transfer-controller with this path
+            // Calls for the PUT method in controller with this path
            RestRequest request = new RestRequest($"transfer/balance/receive/{receiver_id}");
 
-            // Need this line for PUT or POST (otherwise data is lost) 
-            // If receiver account stops updating, issue is here. We added a third property in TransferUpdate class
             request.AddJsonBody(new TransferUpdate(receiver_id, amountToSend));
 
-            // Lets save our response in an object
             // Client is a special key-word (not an object) 
            IRestResponse<Transfer> response = client.Put<Transfer>(request);
 
@@ -66,9 +64,7 @@ namespace TenmoClient.Services
 
         public Transfer LogTransfer(int user_id, int receiver_id, double amountToTransfer)
         {
-            RestRequest request = new RestRequest($"transfer/Log");
-
-            request.AddJsonBody(new TransferUpdate(user_id, amountToTransfer, receiver_id));
+            RestRequest request = new RestRequest($"transfer/Log/test/{user_id}/{receiver_id}/{amountToTransfer}");
 
           
             IRestResponse<Transfer> response = client.Post<Transfer>(request);
